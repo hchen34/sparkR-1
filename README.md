@@ -26,13 +26,13 @@
 
 
 
- >eruptions waiting
->1     3.600      79
->2     3.333      74
->3     4.533      85
->4     4.700      88
->5     3.600      85
->6     4.350      85
+ eruptions waiting
+1     3.600      79
+2     3.333      74
+3     4.533      85
+4     4.700      88
+5     3.600      85
+6     4.350      85
 
 
 # distinct
@@ -134,16 +134,16 @@ The downloaded source packages are in
 
 # Linear Regression Model 
 # Using iris data set
-iris_spark_df <- as.DataFrame(iris)
-head(iris_spark_df)
+> iris_spark_df <- as.DataFrame(iris)
+> head(iris_spark_df)
 
 # Fit a linear model over the dataset
-model <- glm(Sepal_Length ~ Sepal_Width + Species, data = iris_spark_df, family = "gaussian")
+> model <- glm(Sepal_Length ~ Sepal_Width + Species, data = iris_spark_df, family = "gaussian")
 
 # model coefficients are return in a similar format to R's native glm()
-summary(model)
-predictions <- predict(model, newData = iris_spark_df)
-head(select(predictions, "Sepal_Length", "prediction"))
+> summary(model)
+> predictions <- predict(model, newData = iris_spark_df)
+> head(select(predictions, "Sepal_Length", "prediction"))
 
 
 
