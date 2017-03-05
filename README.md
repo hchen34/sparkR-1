@@ -3,26 +3,26 @@
 # try-out with Databricks
 
 
-> dim(faithful)   
-> class(faithful)
+dim(faithful)   
+class(faithful)
 
-[1] 272   2
+[1] 272   2
 
 
 
 # convert the built-in Faithful data set into SparkR DataFrame
 
-> faithful_spark_df <- as.DataFrame(faithful)
+faithful_spark_df <- as.DataFrame(faithful)
 
 #select one column
-> head(select(faithful_spark_df, faithful_spark_df$eruptions))
+head(select(faithful_spark_df, faithful_spark_df$eruptions))
 
 
 #alternate way to select one column
-> head(select(faithful_spark_df, "eruptions"))
+head(select(faithful_spark_df, "eruptions"))
 
 # filtering in a dplyr syntax
-> head(filter(faithful_spark_df, faithful_spark_df$eruptions > 3))
+head(filter(faithful_spark_df, faithful_spark_df$eruptions > 3))
 
 
 
@@ -36,8 +36,8 @@
 
 
 # distinct
-> mtcars_spark_df <- as.DataFrame(mtcars)
-> head(mtcars_spark_df)
+mtcars_spark_df <- as.DataFrame(mtcars)
+head(mtcars_spark_df)
 
 
  mpg cyl disp  hp drat    wt  qsec vs am gear carb
@@ -48,7 +48,7 @@
 5 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 6 18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
 
-> head(distinct(select(mtcars_spark_df,mtcars_spark_df$cyl)))
+head(distinct(select(mtcars_spark_df,mtcars_spark_df$cyl)))
 
 
  cyl
@@ -58,7 +58,7 @@
 
 
 # filter
-> showDF(filter(mtcars_spark_df, mtcars_spark_df$hp>200))
+showDF(filter(mtcars_spark_df, mtcars_spark_df$hp>200))
 
 +----+---+-----+-----+----+-----+-----+---+---+----+----+
 | mpg|cyl| disp|   hp|drat|   wt| qsec| vs| am|gear|carb|
@@ -74,7 +74,7 @@
 
 
 # arrange
-> head(arrange(mtcars_spark_df,desc(mtcars_spark_df$mpg)))
+head(arrange(mtcars_spark_df,desc(mtcars_spark_df$mpg)))
 
  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
 1 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
@@ -85,7 +85,7 @@
 6 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
 
 # summarize
-> head(summarize(groupBy(mtcars_spark_df, mtcars_spark_df$gear),count = n(mtcars_spark_df$gear)))
+head(summarize(groupBy(mtcars_spark_df, mtcars_spark_df$gear),count = n(mtcars_spark_df$gear)))
 
  gear count
 1    4    12
@@ -95,7 +95,7 @@
 
 # Piping
 # install.packaes('magrittr')
-> install.packages('magrittr')
+install.packages('magrittr')
 
 
 Installing package into ‘/databricks/spark/R/lib’
@@ -121,8 +121,8 @@ The downloaded source packages are in
   
   
   #  Loan the library
-  > library(magrittr)
-  > groupBy(mtcars_spark_df, mtcars_spark_df$gear) %>% agg('mean_mpg'=mean(mtcars_spark_df$mpg)) %>% arrange(mtcars_spark_df$gear) %>% head
+  library(magrittr)
+  groupBy(mtcars_spark_df, mtcars_spark_df$gear) %>% agg('mean_mpg'=mean(mtcars_spark_df$mpg)) %>% arrange(mtcars_spark_df$gear) %>% head
   
   gear mean_mpg
 1    3 16.10667
@@ -134,16 +134,16 @@ The downloaded source packages are in
 
 # Linear Regression Model 
 # Using iris data set
-> iris_spark_df <- as.DataFrame(iris)
-> head(iris_spark_df)
+iris_spark_df <- as.DataFrame(iris)
+head(iris_spark_df)
 
 # Fit a linear model over the dataset
-> model <- glm(Sepal_Length ~ Sepal_Width + Species, data = iris_spark_df, family = "gaussian")
+model <- glm(Sepal_Length ~ Sepal_Width + Species, data = iris_spark_df, family = "gaussian")
 
 # model coefficients are return in a similar format to R's native glm()
-> summary(model)
-> predictions <- predict(model, newData = iris_spark_df)
-> head(select(predictions, "Sepal_Length", "prediction"))
+summary(model)
+predictions <- predict(model, newData = iris_spark_df)
+head(select(predictions, "Sepal_Length", "prediction"))
 
 
 
@@ -161,18 +161,18 @@ The downloaded source packages are in
 # K Means Model
 
 # Fit a k-means model with spark.kmeans
-> irisDF <- suppressWarnings(createDataFrame(iris))
-> kmeansDF <- irisDF
-> kmeansTestDF <- irisDF
-> kmeansModel <- spark.kmeans(kmeansDF, ~Sepal_Length + Sepal_Width+ Petal_Length + Petal_Width, k = 3)
+irisDF <- suppressWarnings(createDataFrame(iris))
+kmeansDF <- irisDF
+kmeansTestDF <- irisDF
+kmeansModel <- spark.kmeans(kmeansDF, ~Sepal_Length + Sepal_Width+ Petal_Length + Petal_Width, k = 3)
 
 # Model Summary
-> summary(kmeansModel) 
+summary(kmeansModel) 
 # get fitted result from the k-means model
-> showDF(fitted(kmeansModel))
+showDF(fitted(kmeansModel))
 # prediction
-> kmeansPredictions<- predict(kmeansModel, kmeansTestDF)
-> showDF(kmeansPredictions)
+kmeansPredictions<- predict(kmeansModel, kmeansTestDF)
+showDF(kmeansPredictions)
 
 
 
